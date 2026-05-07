@@ -1,4 +1,5 @@
 using System.Text;
+using Amazon.S3;
 using LegalDoc.Core.Interfaces;
 using LegalDoc.Infrastructure.Repositories;
 using LegalDoc.Infrastructure.Services;
@@ -36,6 +37,11 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Background services
 builder.Services.AddHostedService<RefreshTokenCleanupService>();
+
+// AWS S3
+builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonS3>();
+builder.Services.AddScoped<IS3Service, S3Service>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
