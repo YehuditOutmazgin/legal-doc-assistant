@@ -28,6 +28,7 @@ namespace LegalDoc.Core.DTOs
     {
         public string Title { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
+        public ContractStatus Status { get; set; } = ContractStatus.DRAFT;
         public int ClientId { get; set; }
         public int? TemplateId { get; set; }
         public int? AssignedToUserId { get; set; }

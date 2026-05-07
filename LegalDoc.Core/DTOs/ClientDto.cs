@@ -13,6 +13,7 @@ namespace LegalDoc.Core.DTOs
         public string? CompanyRegistrationNumber { get; set; }
         public string? ContactPersonName { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }
     }
     

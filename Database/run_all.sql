@@ -19,6 +19,7 @@ PROMPT Inserting Seed Data...
 PROMPT ============================================
 @@03_seed_data.sql
 
+
 PROMPT
 PROMPT ============================================
 PROMPT Database Setup Complete!

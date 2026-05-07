@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using LegalDoc.Core.Interfaces;
 using LegalDoc.Core.DTOs;
 using LegalDoc.Core.Enums;
@@ -7,6 +8,7 @@ namespace LegalDoc.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize] // Protect entire controller
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -18,7 +20,9 @@ namespace LegalDoc.API.Controllers
             _logger = logger;
         }
 
+        /// <summary>Get all users (Admin only)</summary>
         [HttpGet]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
         {
             try
@@ -44,11 +48,22 @@ namespace LegalDoc.API.Controllers
             }
         }
 
+        /// <summary>Get user by ID (Admin or own profile)</summary>
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<UserDto>> GetById(int id)
         {
             try
             {
+                // Check if user is accessing their own profile or is admin
+                var currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                var currentUserRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+                
+                if (currentUserRole != "ADMIN" && currentUserId != id.ToString())
+                {
+                    return Forbid("You can only access your own profile");
+                }
+
                 var user = await _userRepository.GetByIdAsync(id);
 
                 if (user == null)
@@ -74,7 +89,9 @@ namespace LegalDoc.API.Controllers
             }
         }
 
+        /// <summary>Get user by email (Admin only)</summary>
         [HttpGet("email/{email}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<UserDto>> GetByEmail(string email)
         {
             try
@@ -104,7 +121,9 @@ namespace LegalDoc.API.Controllers
             }
         }
 
+        /// <summary>Get users by role (Admin only)</summary>
         [HttpGet("role/{role}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetByRole(UserRole role)
         {
             try
