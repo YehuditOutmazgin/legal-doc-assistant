@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="LegalDoc.API/LegalDoc.API.csproj" />
+  <Project Path="LegalDoc.Core/LegalDoc.Core.csproj" />
+  <Project Path="LegalDoc.Infrastructure/LegalDoc.Infrastructure.csproj" />
+  <Project Path="LegalDoc.Lambda/LegalDoc.Lambda.csproj" />
+  <Project Path="LegalDoc.Tests/LegalDoc.Tests.csproj" />
+  <Project Path="LegalDoc.WordAddin/LegalDoc.WordAddin.csproj" Id="8ee7dcc9-7d14-4781-ae50-1b4c21eecd00" />
+</Solution>
