@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Templates - LegalDoc</title>
+  <link rel="stylesheet" href="/src/styles/variables.css">
+  <link rel="stylesheet" href="/src/styles/reset.css">
+  <link rel="stylesheet" href="/src/styles/global.css">
+  <link rel="stylesheet" href="/src/styles/components.css">
+  <link rel="stylesheet" href="/src/styles/pages.css">
+  <link rel="stylesheet" href="/src/styles/responsive.css">
+</head>
+<body>
+  <div class="page-layout">
+    <div id="navbar"></div>
+    <div id="mobileNav"></div>
+
+    <div class="page-content">
+      <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h1>Templates</h1>
+            <p style="color: var(--color-gray-600); margin-top: 0.5rem;">
+              Manage contract templates
+            </p>
+          </div>
+          <button id="createBtn" class="btn btn-primary">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+            </svg>
+            <span>New Template</span>
+          </button>
+        </div>
+
+        <div class="card" style="margin-bottom: 2rem;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="searchInput" class="form-label">Search</label>
+              <input type="text" id="searchInput" class="form-input" placeholder="Search by name..."/>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="categoryFilter" class="form-label">Category</label>
+              <select id="categoryFilter" class="form-select">
+                <option value="">All</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Created Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="templatesBody">
+                <tr>
+                  <td colspan="5" style="text-align: center; padding: 2rem;">
+                    <div class="loader"></div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script type="module" src="./templates.ts"></script>
+</body>
+</html>

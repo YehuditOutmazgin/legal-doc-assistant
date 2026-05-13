@@ -35,7 +35,7 @@ namespace LegalDoc.API.Controllers
         }
 
         [HttpPost("register")]
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<UserDto>> Register([FromBody] RegisterDto registerDto)
         {
             try

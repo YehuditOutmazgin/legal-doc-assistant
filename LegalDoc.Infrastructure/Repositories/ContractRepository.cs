@@ -85,9 +85,11 @@ namespace LegalDoc.Infrastructure.Repositories
                                       CREATED_AT, NOTES)
                 VALUES (:title, :content, :status, :clientId, :templateId, 
                         :createdByUserId, :assignedToUserId, :s3Key, 
-                        CURRENT_TIMESTAMP, :notes)";
+                        CURRENT_TIMESTAMP, :notes)
+                RETURNING ID INTO :id";
 
-            await ExecuteNonQueryAsync(query,
+            var parameters = new[]
+            {
                 CreateParameter(":title", contract.Title),
                 CreateParameter(":content", contract.Content),
                 CreateParameter(":status", contract.Status.ToString()),
@@ -96,10 +98,14 @@ namespace LegalDoc.Infrastructure.Repositories
                 CreateParameter(":createdByUserId", contract.CreatedByUserId),
                 CreateParameter(":assignedToUserId", contract.AssignedToUserId),
                 CreateParameter(":s3Key", contract.S3Key),
-                CreateParameter(":notes", contract.Notes));
+                CreateParameter(":notes", contract.Notes),
+                new OracleParameter("id", OracleDbType.Decimal) { Direction = System.Data.ParameterDirection.Output }
+            };
 
-            var createdContract = await GetByIdAsync(contract.Id);
-            return createdContract ?? throw new InvalidOperationException("Failed to create contract");
+            ExecuteNonQuerySync(query, parameters);
+            contract.Id = ((Oracle.ManagedDataAccess.Types.OracleDecimal)parameters[9].Value).ToInt32();
+
+            return contract;
         }
 
         public async Task<Contract> UpdateAsync(Contract contract)

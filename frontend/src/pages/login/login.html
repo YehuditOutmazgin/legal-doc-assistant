@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - LegalDoc</title>
+  <link rel="stylesheet" href="/src/styles/variables.css">
+  <link rel="stylesheet" href="/src/styles/reset.css">
+  <link rel="stylesheet" href="/src/styles/global.css">
+  <link rel="stylesheet" href="/src/styles/components.css">
+  <link rel="stylesheet" href="/src/styles/pages.css">
+  <link rel="stylesheet" href="/src/styles/responsive.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card card">
+      <div class="text-center" style="margin-bottom: 2rem;">
+        <h1 style="color: var(--color-primary); margin-bottom: 0.5rem;">LegalDoc</h1>
+        <p style="color: var(--color-gray-600);">Legal Document Management System</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-input"
+            placeholder="your@email.com"
+            required
+            autocomplete="email"
+          />
+          <div id="emailError" class="form-error hidden"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-input"
+            placeholder="••••••••"
+            required
+            autocomplete="current-password"
+          />
+          <div id="passwordError" class="form-error hidden"></div>
+        </div>
+
+        <div id="generalError" class="form-error hidden" style="margin-bottom: 1rem;"></div>
+
+        <button type="submit" class="btn btn-primary btn-lg" id="loginBtn">
+          <span id="loginBtnText">Login</span>
+          <span id="loginBtnLoader" class="loader hidden"></span>
+        </button>
+      </form>
+
+      <div style="margin-top: 1.5rem; text-align: center; color: var(--color-gray-600); font-size: var(--font-size-sm);">
+        <p>Demo user:</p>
+        <p>admin@legaldoc.com / Admin123!</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script type="module" src="./login.ts"></script>
+</body>
+</html>

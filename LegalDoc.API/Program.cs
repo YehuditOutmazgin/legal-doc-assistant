@@ -43,7 +43,11 @@ builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
 builder.Services.AddAWSService<IAmazonS3>();
 builder.Services.AddScoped<IS3Service, S3Service>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    });
 builder.Services.AddEndpointsApiExplorer();
 
 // Swagger with JWT support
@@ -102,6 +106,24 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RequireAnyUser", policy => policy.RequireAuthenticatedUser());
 });
 
+// CORS for Frontend
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy", policy =>
+    {
+        policy.WithOrigins(
+            "http://localhost:5173", 
+            "http://localhost:3000", 
+            "http://127.0.0.1:5500",
+            "https://localhost:5173",
+            "https://localhost:3000"
+        )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -111,6 +133,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// CORS must come before Authentication
+app.UseCors("FrontendPolicy");
 
 // Authentication must come before Authorization
 app.UseAuthentication();

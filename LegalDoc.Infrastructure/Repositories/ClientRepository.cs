@@ -65,9 +65,11 @@ namespace LegalDoc.Infrastructure.Repositories
                 INSERT INTO CLIENTS (NAME, TYPE, EMAIL, PHONE, ADDRESS, COMPANY_REGISTRATION_NUMBER, 
                                     CONTACT_PERSON_NAME, CREATED_AT, IS_ACTIVE)
                 VALUES (:name, :type, :email, :phone, :address, :companyRegNumber, 
-                        :contactPersonName, CURRENT_TIMESTAMP, :isActive)";
+                        :contactPersonName, CURRENT_TIMESTAMP, :isActive)
+                RETURNING ID INTO :id";
 
-            await ExecuteNonQueryAsync(query,
+            var parameters = new[]
+            {
                 CreateParameter(":name", client.Name),
                 CreateParameter(":type", client.Type.ToString()),
                 CreateParameter(":email", client.Email),
@@ -75,10 +77,14 @@ namespace LegalDoc.Infrastructure.Repositories
                 CreateParameter(":address", client.Address),
                 CreateParameter(":companyRegNumber", client.CompanyRegistrationNumber),
                 CreateParameter(":contactPersonName", client.ContactPersonName),
-                CreateParameter(":isActive", client.IsActive ? 1 : 0));
+                CreateParameter(":isActive", client.IsActive ? 1 : 0),
+                new OracleParameter("id", OracleDbType.Decimal) { Direction = System.Data.ParameterDirection.Output }
+            };
 
-            var createdClient = await GetByEmailAsync(client.Email);
-            return createdClient ?? throw new InvalidOperationException("Failed to create client");
+            ExecuteNonQuerySync(query, parameters);
+            client.Id = ((Oracle.ManagedDataAccess.Types.OracleDecimal)parameters[8].Value).ToInt32();
+
+            return client;
         }
 
         public async Task<Client> UpdateAsync(Client client)

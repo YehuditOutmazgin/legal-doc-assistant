@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - LegalDoc</title>
+  <link rel="stylesheet" href="/src/styles/variables.css">
+  <link rel="stylesheet" href="/src/styles/reset.css">
+  <link rel="stylesheet" href="/src/styles/global.css">
+  <link rel="stylesheet" href="/src/styles/components.css">
+  <link rel="stylesheet" href="/src/styles/pages.css">
+  <link rel="stylesheet" href="/src/styles/responsive.css">
+</head>
+<body>
+  <div class="page-layout">
+    <div id="navbar"></div>
+    <div id="mobileNav"></div>
+
+    <div class="page-content">
+      <div class="container">
+        <div style="margin-bottom: 2rem;">
+          <h1>Dashboard</h1>
+          <p style="color: var(--color-gray-600); margin-top: 0.5rem;">
+            Hello, <span id="userName"></span>
+          </p>
+        </div>
+
+        <div class="dashboard-grid" id="statsGrid">
+          <!-- Stats will be loaded here -->
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Recent Contracts</h3>
+          </div>
+          <div id="recentContracts">
+            <div style="text-align: center; padding: 2rem; color: var(--color-gray-500);">
+              Loading...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script type="module" src="./dashboard.ts"></script>
+</body>
+</html>

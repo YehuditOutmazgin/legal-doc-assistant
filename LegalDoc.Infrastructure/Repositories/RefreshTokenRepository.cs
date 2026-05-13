@@ -30,9 +30,11 @@ namespace LegalDoc.Infrastructure.Repositories
                 new OracleParameter("IsRevoked", refreshToken.IsRevoked ? 1 : 0),
                 new OracleParameter("Id", OracleDbType.Int32) { Direction = ParameterDirection.Output }
             };
+            ExecuteNonQuerySync(sql, parameters);
+            //await ExecuteNonQueryAsync(sql, parameters);
+            //refreshToken.Id = Convert.ToInt32(parameters[5].Value);
+            refreshToken.Id = ((Oracle.ManagedDataAccess.Types.OracleDecimal)parameters[5].Value).ToInt32();
 
-            await ExecuteNonQueryAsync(sql, parameters);
-            refreshToken.Id = Convert.ToInt32(parameters[5].Value);
             return refreshToken;
         }
 

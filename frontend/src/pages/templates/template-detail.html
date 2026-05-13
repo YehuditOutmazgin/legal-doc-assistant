@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Template Details - LegalDoc</title>
+  <link rel="stylesheet" href="/src/styles/variables.css">
+  <link rel="stylesheet" href="/src/styles/reset.css">
+  <link rel="stylesheet" href="/src/styles/global.css">
+  <link rel="stylesheet" href="/src/styles/components.css">
+  <link rel="stylesheet" href="/src/styles/pages.css">
+  <link rel="stylesheet" href="/src/styles/responsive.css">
+</head>
+<body>
+  <div class="page-layout">
+    <div id="navbar"></div>
+    <div id="mobileNav"></div>
+
+    <div class="page-content">
+      <div class="container">
+        <div style="margin-bottom: 2rem;">
+          <a href="/src/pages/templates/templates.html" style="color: var(--color-primary); display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+            </svg>
+            <span>Back to Templates</span>
+          </a>
+          <h1 id="pageTitle">New Template</h1>
+        </div>
+
+        <div class="card">
+          <form id="templateForm">
+            <div class="form-group">
+              <label for="name" class="form-label">Template Name *</label>
+              <input type="text" id="name" class="form-input" placeholder="e.g., Standard Rental Agreement" required/>
+              <div id="nameError" class="form-error hidden"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="category" class="form-label">Category *</label>
+              <input type="text" id="category" class="form-input" placeholder="e.g., Rental, Sale, Employment" required/>
+              <div id="categoryError" class="form-error hidden"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="description" class="form-label">Description *</label>
+              <textarea id="description" class="form-textarea" placeholder="Brief description of the template..." required></textarea>
+              <div id="descriptionError" class="form-error hidden"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="content" class="form-label">Template Content *</label>
+              <textarea id="content" class="form-textarea" placeholder="Template content..." required style="min-height: 300px;"></textarea>
+              <div id="contentError" class="form-error hidden"></div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; justify-content: flex-end; flex-wrap: wrap;">
+              <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+              <button type="submit" id="saveBtn" class="btn btn-primary">
+                <span id="saveBtnText">Save</span>
+                <span id="saveBtnLoader" class="loader hidden"></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script type="module" src="./template-detail.ts"></script>
+</body>
+</html>

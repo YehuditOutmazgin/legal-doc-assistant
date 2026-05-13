@@ -65,18 +65,24 @@ namespace LegalDoc.Infrastructure.Repositories
                 INSERT INTO TEMPLATES (NAME, DESCRIPTION, CONTENT, CATEGORY, CREATED_BY_USER_ID, 
                                       CREATED_AT, IS_ACTIVE)
                 VALUES (:name, :description, :content, :category, :createdByUserId, 
-                        CURRENT_TIMESTAMP, :isActive)";
+                        CURRENT_TIMESTAMP, :isActive)
+                RETURNING ID INTO :id";
 
-            await ExecuteNonQueryAsync(query,
+            var parameters = new[]
+            {
                 CreateParameter(":name", template.Name),
                 CreateParameter(":description", template.Description),
                 CreateParameter(":content", template.Content),
                 CreateParameter(":category", template.Category),
                 CreateParameter(":createdByUserId", template.CreatedByUserId),
-                CreateParameter(":isActive", template.IsActive ? 1 : 0));
+                CreateParameter(":isActive", template.IsActive ? 1 : 0),
+                new OracleParameter("id", OracleDbType.Decimal) { Direction = System.Data.ParameterDirection.Output }
+            };
 
-            var createdTemplate = await GetByIdAsync(template.Id);
-            return createdTemplate ?? throw new InvalidOperationException("Failed to create template");
+            ExecuteNonQuerySync(query, parameters);
+            template.Id = ((Oracle.ManagedDataAccess.Types.OracleDecimal)parameters[6].Value).ToInt32();
+
+            return template;
         }
 
         public async Task<Template> UpdateAsync(Template template)

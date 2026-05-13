@@ -57,6 +57,22 @@ namespace LegalDoc.Infrastructure.Data
             }
         }
 
+        protected int ExecuteNonQuerySync(string query, OracleParameter[] parameters)
+        {
+            try
+            {
+                using var connection = new OracleConnection(_connectionString);
+                connection.Open();
+                using var command = new OracleCommand(query, connection);
+                command.Parameters.AddRange(parameters);
+                return command.ExecuteNonQuery();
+            }
+            catch (OracleException ex)
+            {
+                _logger.LogError(ex, "Oracle error executing sync non-query: {Query}", query);
+                throw;
+            }
+        }
         protected async Task<List<T>> ExecuteReaderAsync<T>(string query, Func<OracleDataReader, T> mapper, params OracleParameter[] parameters)
         {
             var results = new List<T>();

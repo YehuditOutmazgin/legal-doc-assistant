@@ -59,18 +59,24 @@ namespace LegalDoc.Infrastructure.Repositories
         {
             const string query = @"
                 INSERT INTO USERS (EMAIL, PASSWORD_HASH, FIRST_NAME, LAST_NAME, ROLE, CREATED_AT, IS_ACTIVE)
-                VALUES (:email, :passwordHash, :firstName, :lastName, :role, CURRENT_TIMESTAMP, :isActive)";
+                VALUES (:email, :passwordHash, :firstName, :lastName, :role, CURRENT_TIMESTAMP, :isActive)
+                RETURNING ID INTO :id";
 
-            await ExecuteNonQueryAsync(query,
+            var parameters = new[]
+            {
                 CreateParameter(":email", user.Email),
                 CreateParameter(":passwordHash", user.PasswordHash ?? string.Empty),
                 CreateParameter(":firstName", user.FirstName),
                 CreateParameter(":lastName", user.LastName),
                 CreateParameter(":role", user.Role.ToString()),
-                CreateParameter(":isActive", user.IsActive ? 1 : 0));
+                CreateParameter(":isActive", user.IsActive ? 1 : 0),
+                new OracleParameter("id", OracleDbType.Decimal) { Direction = System.Data.ParameterDirection.Output }
+            };
 
-            var createdUser = await GetByEmailAsync(user.Email);
-            return createdUser ?? throw new InvalidOperationException("Failed to create user");
+            ExecuteNonQuerySync(query, parameters);
+            user.Id = ((Oracle.ManagedDataAccess.Types.OracleDecimal)parameters[6].Value).ToInt32();
+
+            return user;
         }
 
         public async Task<User> UpdateAsync(User user)
